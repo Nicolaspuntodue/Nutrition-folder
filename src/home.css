@@ -1,0 +1,174 @@
+@import './tokens.css';
+
+/* Barra in alto: marchio, tre link, un'azione. */
+.nav {
+  position: fixed; inset: 0 0 auto; z-index: 10; display: flex; align-items: center; gap: 32px;
+  padding: 16px var(--m); background: var(--bg); font-size: 15px;
+}
+.wordmark { font: 800 22px/1 var(--display); letter-spacing: -0.04em; text-decoration: none; margin-right: auto }
+.nav nav { display: flex; gap: 28px }
+.nav nav a { text-decoration: none; transition: color 160ms }
+.nav nav a:hover { color: var(--green); text-decoration: underline; text-underline-offset: 4px }
+.nav .btn { min-height: 40px; padding: 0 18px; font-size: 15px }
+@media (max-width: 700px) { .nav nav { display: none } .nav { gap: 12px } }
+
+/* Hero: la frase spezzata dal piatto, ferma mentre lo scroll scorre i pasti. */
+.hero { height: 300svh; position: relative }
+.stage { position: sticky; top: 0; height: 100svh; display: grid; grid-template-rows: 1fr auto; padding: 88px var(--m) 32px; overflow: hidden }
+.split {
+  align-self: center; display: grid; grid-template-columns: 1fr minmax(0, 38vw) 1fr; align-items: center; gap: var(--gap);
+  font-size: var(--t1); font-weight: 800; letter-spacing: -0.045em; line-height: 0.95;
+}
+.half { white-space: nowrap }
+.half.b { text-align: right }
+.frame {
+  position: relative; aspect-ratio: 16 / 11; border-radius: var(--radius); background: var(--surface); overflow: hidden;
+  transform: scale(calc(1 + var(--hero-p, 0) * 0.08));
+}
+.frame canvas { position: relative; width: 100%; height: 100%; cursor: grab }
+.frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover }
+.frame.no-gl canvas { display: none }
+.hero-foot { display: flex; align-items: end; justify-content: space-between; gap: var(--gap) }
+.lead { max-width: 30ch; font-size: var(--t3); line-height: 1.35 }
+.hero-foot .btn { display: none }
+
+.steps { position: absolute; left: 50%; margin: 0; bottom: 32px; transform: translateX(-50%); width: min(38vw, 560px); list-style: none; padding: 0; height: 74px }
+.steps li {
+  position: absolute; inset: 0; display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-content: start;
+  opacity: 0; transform: translateY(14px); transition: opacity 420ms var(--ease), transform 420ms var(--ease);
+}
+.steps li.on { opacity: 1; transform: none }
+.steps .t { font: 800 var(--t3)/1.1 var(--display); grid-row: span 3 }
+.steps .s { font-weight: 700 }
+.steps .n, .steps .k { font-size: var(--t5); color: var(--muted) }
+
+@media (max-width: 900px) {
+  .stage { display: flex; flex-direction: column; padding-top: 80px; gap: 16px }
+  .split { order: 1; align-self: stretch } .steps { order: 2 } .hero-foot { order: 3 }
+  .split { grid-template-columns: 1fr; gap: 14px; font-size: clamp(40px, 11vw, 72px) }
+  .frame { aspect-ratio: 4 / 3; width: auto; height: min(44svh, calc((100vw - 2 * var(--m)) * 0.75)); justify-self: start }
+  .stage > * { flex-shrink: 0 }
+  .steps { position: relative; left: auto; bottom: auto; transform: none; width: 100%; height: 88px }
+  .frame { transform: none }
+  .hero-foot { flex-direction: column; align-items: start; gap: 16px }
+  .hero-foot .btn { display: inline-flex }
+  .lead { font-size: 18px }
+}
+
+/* Come funziona: due campi pieni e un cursore che li guida. */
+.how { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr auto; min-height: 88svh; margin-top: var(--section) }
+.how-field { padding: 56px var(--m) }
+.how-text { background: var(--green); color: var(--on-green); display: flex; flex-direction: column; gap: 28px }
+.clause { font-size: var(--t2); max-width: 12ch }
+.how-p { max-width: 38ch; font-size: var(--t4) }
+.how-ui { background: var(--surface); display: grid; place-items: center }
+.frag { width: min(440px, 100%); background: var(--bg); border-radius: 12px; padding: 22px; opacity: 0; transform: translateY(10px); transition: opacity 200ms, transform 300ms var(--ease) }
+.frag.show { opacity: 1; transform: none }
+.frag .q { font: 700 24px/1.15 var(--display); margin-bottom: 16px }
+.frag .chips { display: flex; flex-wrap: wrap; gap: 8px }
+.frag .chips span { padding: 10px 16px; border-radius: 999px; background: var(--surface); font-weight: 500 }
+.frag .chips .sel { background: var(--ink); color: var(--bg) }
+.frag .hint { margin-top: 14px; font-size: var(--t5); color: var(--muted) }
+.frag .tl, .frag .li { display: grid; grid-template-columns: 64px 1fr auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--surface) }
+.frag .li { grid-template-columns: 24px 1fr auto }
+.frag .tl em, .frag .li em { font-style: normal; color: var(--muted); font-variant-numeric: tabular-nums }
+.frag .tot { border: 0; font-weight: 700 }
+.frag input { accent-color: var(--green); width: 18px; height: 18px }
+.how-control { grid-column: 1 / -1; padding: 28px var(--m) 32px; background: var(--bg) }
+.track-wrap { position: relative; --fill: 0% }
+.track-wrap::before, .track-wrap .fill { content: ''; position: absolute; left: 0; top: 12px; height: 8px; background: var(--surface); right: 0 }
+.track-wrap .fill { right: auto; width: var(--fill); background: var(--ink); transition: width 200ms var(--ease) }
+#stage-range { position: relative; width: 100%; appearance: none; height: 32px; margin: 0; background: transparent; cursor: pointer }
+#stage-range::-webkit-slider-runnable-track { height: 8px; background: transparent }
+#stage-range::-webkit-slider-thumb { appearance: none; width: 32px; height: 32px; margin-top: -12px; background: var(--accent); border-radius: 0 }
+#stage-range::-moz-range-track { height: 8px; background: transparent }
+#stage-range::-moz-range-thumb { width: 32px; height: 32px; border: 0; border-radius: 0; background: var(--accent) }
+.stage-names { list-style: none; padding: 0; margin-top: 10px; display: grid; grid-template-columns: repeat(4, 1fr); color: var(--muted) }
+.stage-names li { cursor: pointer }
+.stage-names li:nth-child(2), .stage-names li:nth-child(3) { text-align: center }
+.stage-names li:last-child { text-align: right }
+.stage-names li.on { color: var(--ink); font-weight: 700 }
+@media (max-width: 800px) {
+  .how { grid-template-columns: 1fr; grid-template-rows: auto auto auto }
+  .how-ui { order: -1; min-height: 46svh; padding: 28px var(--m) }
+  .how-control { order: 0; padding-top: 20px }
+  .how-text { order: 1 }
+  .clause { font-size: clamp(34px, 9vw, 48px) }
+  #stage-range::-webkit-slider-thumb { width: 40px; height: 40px; margin-top: -16px }
+  .stage-names { grid-template-columns: 1fr 1fr; gap: 6px; font-size: 15px }
+  .stage-names li { text-align: left !important }
+}
+
+/* La settimana: tutto appeso a un asse, foto in margine di misure diverse. */
+.week { padding: var(--section) var(--m) 0 }
+.week-head { margin-left: 35%; max-width: 760px; min-height: 50svh; display: flex; flex-direction: column; justify-content: center; gap: 24px }
+.week-head h2 { font-size: var(--t2) }
+.week-head p { max-width: 46ch }
+.rows { list-style: none; padding: 0; display: grid; gap: 110px; margin-top: 40px }
+.row { display: grid; grid-template-columns: 35% 1fr auto; gap: var(--gap); align-items: start }
+.row-text { grid-column: 2; max-width: 44ch }
+.row-text h3 { font-size: clamp(28px, 3vw, 46px); margin-bottom: 14px }
+.row-text h3::first-letter { text-transform: uppercase }
+.row-pic { grid-column: 3; margin: 0; background: var(--surface); overflow: hidden }
+.row.r0 .row-pic { width: 300px; aspect-ratio: 4 / 5 }
+.row.r1 .row-pic { width: 380px; aspect-ratio: 3 / 2 }
+.row.r2 .row-pic { width: 240px; aspect-ratio: 1 }
+.row-pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease) }
+.row:hover .row-pic img { transform: scale(1.04) }
+.row-pic.empty img { visibility: hidden }
+.row-pic.empty { background: var(--green) }
+@media (max-width: 800px) {
+  .week-head { margin-left: 0; min-height: 40svh }
+  .week-head h2 { font-size: clamp(36px, 9vw, 52px) }
+  .rows { gap: 64px }
+  .row { grid-template-columns: 1fr }
+  .row-text, .row-pic { grid-column: 1 }
+  .row.r0 .row-pic { width: 100% }
+  .row.r1 .row-pic { width: 70%; justify-self: end }
+  .row.r2 .row-pic { width: 55% }
+}
+
+/* Il peso: domanda, cursore, e il numero che risponde. */
+.weight { margin-top: var(--section); min-height: 88svh; padding: 64px var(--m) 48px; background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; gap: 64px }
+.weight-top h2 { font-size: clamp(32px, 3vw, 44px); margin-bottom: 28px }
+.control { width: min(400px, 100%) }
+.control label { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 10px }
+.control output { font-variant-numeric: tabular-nums }
+#kg { width: 100%; accent-color: var(--green); height: 32px }
+.weight-bottom { display: flex; justify-content: space-between; align-items: end; gap: var(--gap); flex-wrap: wrap }
+.figure { font: 800 clamp(140px, 19vw, 320px)/0.8 var(--display); letter-spacing: -0.05em; font-variant-numeric: tabular-nums; color: var(--green) }
+.figure .unit { font-size: 0.22em; margin-left: 0.1em; letter-spacing: 0 }
+.working { max-width: 30ch; font-size: var(--t4) }
+@media (max-width: 700px) { .figure { font-size: 30vw } .weight-top h2 { font-size: 28px } }
+
+/* Chiusura: la frase con lo spazio vuoto, che è il modulo. */
+.cta { padding: var(--section) var(--m) }
+.blank-line { font: 800 clamp(40px, 6vw, 104px)/1.08 var(--display); letter-spacing: -0.045em; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.22em; max-width: 14em }
+.blank-line input { width: 4.6em; height: 1.08em; padding: 0 0.2em; border: 0; border-radius: var(--radius); background: var(--surface); font: inherit; letter-spacing: inherit }
+.blank-line button { border: 0; border-radius: var(--radius); background: var(--accent); color: var(--on-accent); font: inherit; letter-spacing: inherit; padding: 0 0.25em; height: 1.08em; cursor: pointer; transition: transform 160ms var(--ease), background-color 160ms }
+.blank-line button:hover { background: #a8380a }
+.blank-line button:active { transform: scale(0.97) }
+.blank-note { margin-top: 24px; font-size: 16px; color: var(--muted) }
+@media (max-width: 700px) { .blank-line { font-size: 10vw } .blank-line input { width: 100%; flex-basis: 100% } }
+
+/* Footer: campo verde, il contatto come titolo. */
+.foot { min-height: 90svh; background: var(--green); color: var(--on-green); padding: 40px var(--m) 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 48px }
+.foot-top { display: flex; gap: 40px; font-size: 15px }
+.foot-top a { margin-left: auto }
+.foot-contact { font: 800 clamp(48px, 9.4vw, 170px)/0.9 var(--display); letter-spacing: -0.05em; text-decoration: none; transition: color 200ms }
+.foot-contact:hover { color: var(--sage) }
+.foot-meta { display: flex; justify-content: space-between; gap: 24px; font-size: 14px }
+@media (max-width: 700px) {
+  .foot-top, .foot-meta { flex-direction: column; gap: 8px }
+  .foot-top a { margin-left: 0 }
+  .foot-contact { font-size: 12vw }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero { height: auto }
+  .stage { position: relative; height: auto; min-height: 100svh }
+  .frame { transform: none }
+  .steps { position: static; transform: none; width: 100%; height: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 24px }
+  .steps li { position: static; opacity: 1; transform: none }
+  .steps li, .frag { transition: none }
+}

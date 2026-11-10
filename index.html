@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Il piatto di Sofia</title>
+  <meta name="description" content="Ogni mattina un minuto di domande, e Sofia sa cosa mangiare, quanto, a che ora e cosa comprare.">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&display=swap">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+  <meta name="theme-color" content="#eef2e8">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Sofia">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <script>document.documentElement.classList.add('js')</script>
+  <script type="module" src="/src/home.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="wordmark" href="/">Sofia</a>
+    <nav aria-label="Sezioni">
+      <a href="#come-funziona">Come funziona</a>
+      <a href="#settimana">La settimana</a>
+      <a href="#peso">Il tuo peso</a>
+    </nav>
+    <a class="btn" href="/app.html">Apri la tua app</a>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="stage">
+        <h1 id="hero-title" class="split">
+          <span class="half a">Il piatto di</span>
+          <span class="frame" aria-hidden="true"><img id="plate-fallback" src="/img/meals/toast.jpg" alt="" width="720" height="720"><canvas id="plate"></canvas></span>
+          <span class="half b">Sofia, oggi.</span>
+        </h1>
+        <div class="hero-foot">
+          <p class="lead">Un minuto di domande la mattina, e sai cosa mangiare, quanto, a che ora e cosa comprare.</p>
+          <a class="btn" href="/app.html">Apri la tua app</a>
+        </div>
+        <ol class="steps" id="steps" aria-label="Un lunedì con allenamento alle 17"></ol>
+      </div>
+    </section>
+
+    <section id="come-funziona" class="how" aria-labelledby="how-title">
+      <div class="how-field how-text">
+        <h2 id="how-title" class="clause">Prima, qualche domanda</h2>
+        <p class="how-p" id="how-p">Ti svegli, apri l'app e rispondi: che giorno è, se lavori al salone, se ti alleni e a che ora, se la colazione la vuoi dolce o salata.</p>
+      </div>
+      <div class="how-field how-ui">
+        <div class="frag" data-ui id="frag"></div>
+      </div>
+      <div class="how-control">
+        <label class="sr" for="stage-range">Fase</label>
+        <div class="track-wrap" id="track"><span class="fill"></span><input id="stage-range" type="range" min="0" max="3" step="1" value="0"></div>
+        <ul class="stage-names" id="stage-names">
+          <li>Il quiz</li><li>La giornata</li><li>La spesa</li><li>I pasti fatti</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="settimana" class="week" aria-labelledby="week-title">
+      <div class="week-head" data-rise>
+        <h2 id="week-title">Sette giorni, zero spuntini.</h2>
+        <p>Tre pasti veri, più uno piccolo prima dell'allenamento. Pollo e macinato sempre 250 g, riso 80 g, e il resto dei carboidrati si adatta alla tua giornata.</p>
+      </div>
+      <ol class="rows" id="rows"></ol>
+    </section>
+
+    <section id="peso" class="weight" aria-labelledby="weight-title">
+      <div class="weight-top" data-rise>
+        <h2 id="weight-title">Quanto pesi stamattina?</h2>
+        <div class="control" data-ui>
+          <label for="kg">Peso <output id="kg-out">58,0 kg</output></label>
+          <input id="kg" type="range" min="50" max="70" step="0.5" value="58">
+        </div>
+      </div>
+      <div class="weight-bottom">
+        <p class="figure"><span id="protein">116</span><span class="unit">g</span></p>
+        <p class="working">di proteine al giorno: due grammi per ogni chilo, la quota che fa crescere glutei e gambe senza prendere grasso.</p>
+      </div>
+    </section>
+
+    <section class="cta" aria-labelledby="cta-title">
+      <form class="blank" action="/app.html" method="get">
+        <h2 id="cta-title" class="sr">Inizia il quiz</h2>
+        <p class="blank-line">
+          <span>Buongiorno</span>
+          <label class="sr" for="name">Il tuo nome</label>
+          <input id="name" name="nome" value="Sofia" autocomplete="given-name">
+          <span>, si</span>
+          <button type="submit">parte.</button>
+        </p>
+        <p class="blank-note">Il quiz dura un minuto e ricorda le risposte di oggi sul tuo telefono.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-top">
+      <p>Il piano di Sofia, fatto su misura per lei</p>
+      <p>18 anni, 1,74 m, parrucchiera, 2-3 allenamenti a settimana</p>
+      <a href="#hero-title">Torna su</a>
+    </div>
+    <a class="foot-contact" href="/app.html">A domattina, Sofia.</a>
+    <div class="foot-meta">
+      <span><a href="/app.html">Il quiz</a> · <a href="#come-funziona">Come funziona</a></span>
+      <span>Immagini generate con Higgsfield · Valori stimati da tabella, non una prescrizione medica</span>
+      <span>Pescara, 2026</span>
+    </div>
+  </footer>
+</body>
+</html>

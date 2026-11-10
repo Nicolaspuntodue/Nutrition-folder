@@ -1,0 +1,201 @@
+@import './tokens.css';
+
+/* L'app: si usa dal telefono, col pollice, la mattina. */
+.app { min-height: 100svh }
+.bar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; padding: 14px var(--m); background: var(--bg) }
+.wordmark { font: 800 20px/1 var(--display); letter-spacing: -0.04em; text-decoration: none }
+.link { background: none; border: 0; padding: 10px 0; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; min-height: 44px }
+.pad { padding: var(--m) }
+#view { max-width: 720px; margin: 0 auto; padding: 0 var(--m) 64px }
+
+/* Domande */
+.quiz { min-height: calc(100svh - 72px); display: flex; flex-direction: column; padding-top: 12px }
+.progress { height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden }
+.progress span { display: block; height: 100%; background: var(--green); transition: width 300ms var(--ease) }
+.count { margin-top: 12px; font-size: var(--t5); color: var(--muted) }
+.question { font-size: clamp(34px, 9vw, 56px); margin: 28px 0 32px; max-width: 14ch; animation: rise 420ms var(--ease) both }
+.opts { display: grid; gap: 10px; animation: rise 420ms 60ms var(--ease) both }
+.opt {
+  min-height: 60px; padding: 0 20px; text-align: left; border: 0; border-radius: 14px; background: var(--surface);
+  font-size: 18px; font-weight: 500; cursor: pointer; transition: background-color 160ms, transform 160ms var(--ease);
+}
+.opt:hover { background: #d3ddc7 }
+.opt:active { transform: scale(0.98) }
+.opt.sel { background: var(--ink); color: var(--bg) }
+.back { margin-top: auto; align-self: start }
+.weigh { display: grid; gap: 10px; animation: rise 420ms 60ms var(--ease) both }
+.weigh label { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; font-size: 18px }
+.weigh output { font: 800 32px/1 var(--display); font-variant-numeric: tabular-nums }
+.weigh input { width: 100%; height: 44px; accent-color: var(--green) }
+.hint { font-size: var(--t5); color: var(--muted) }
+.btn.big { margin-top: 28px; min-height: 56px; font-size: 18px; width: 100% }
+@keyframes rise { from { opacity: 0; transform: translateY(16px) } }
+
+/* La giornata */
+.day { padding-top: 16px }
+.day-head { display: grid; grid-template-columns: 1fr 120px; gap: 12px; align-items: center }
+.day-head h1 { font-size: clamp(34px, 8vw, 56px) }
+.sub { margin-top: 10px; color: var(--muted) }
+.mini { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; background: var(--surface) }
+.rings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 24px }
+.ring { margin: 0; text-align: center }
+.ring svg { width: 100%; max-width: 76px; transform: rotate(-90deg) }
+.ring-bg, .ring-fg { fill: none; stroke-width: 7 }
+.ring-bg { stroke: var(--surface) }
+.ring-fg { stroke: var(--green); stroke-linecap: round; transition: stroke-dashoffset 900ms var(--ease) }
+.ring figcaption { display: grid; margin-top: 6px }
+.ring b { font: 800 18px/1.1 var(--display); font-variant-numeric: tabular-nums }
+.ring span { font-size: 13px; color: var(--muted) }
+.eaten { margin-top: 16px; padding: 14px 16px; background: var(--surface); border-radius: 12px }
+
+.h { font-size: clamp(28px, 6vw, 40px); margin: 48px 0 16px }
+.meals { list-style: none; padding: 0; display: grid; gap: 12px }
+.meal { display: grid; grid-template-columns: 72px 1fr; gap: 14px; padding: 18px 0; border-top: 1px solid var(--surface) }
+.meal-time b { display: block; font: 800 22px/1 var(--display); font-variant-numeric: tabular-nums }
+.meal-time span { font-size: 13px; color: var(--green); font-weight: 700 }
+.meal-pic { margin: 0 0 12px; width: 100%; aspect-ratio: 1; max-width: 320px; border-radius: 12px; overflow: hidden; background: var(--surface) }
+.meal-pic img { width: 100%; height: 100%; object-fit: cover }
+.meal h3 { font-size: 22px; letter-spacing: -0.02em; line-height: 1.1 }
+.note { margin-top: 8px; font-size: 15px; color: var(--muted) }
+.ing { list-style: none; padding: 0; margin: 12px 0; display: grid }
+.ing li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--surface) }
+.ing b { font-variant-numeric: tabular-nums }
+.mac { font-size: 14px; color: var(--muted) }
+.mac b { color: var(--ink) }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px }
+.acts .btn { min-height: 44px; font-size: 15px }
+.meal.is-done .acts .swap { opacity: 0.45 }
+.meal.is-done .meal-body > :not(.acts) { opacity: 0.45 }
+
+.shop-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; flex-wrap: wrap }
+.shop-head .h { margin-bottom: 8px }
+.seg { display: inline-flex; background: var(--surface); border-radius: 999px; padding: 4px; margin-bottom: 10px }
+.seg button { border: 0; background: none; min-height: 40px; padding: 0 16px; border-radius: 999px; font-weight: 700; cursor: pointer }
+.seg .on { background: var(--ink); color: var(--bg) }
+.shop { display: grid; gap: 24px; margin-top: 16px }
+.aisle h3 { font-size: 18px; letter-spacing: -0.01em; margin-bottom: 6px; color: var(--green) }
+.item { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; min-height: 48px; border-bottom: 1px solid var(--surface); cursor: pointer }
+.item input { width: 22px; height: 22px; accent-color: var(--green) }
+.item b { font-variant-numeric: tabular-nums; font-weight: 500; text-align: right; font-size: 15px }
+.item.got span, .item.got b { text-decoration: line-through; color: var(--muted) }
+.fine { margin-top: 40px; font-size: 13px; color: var(--muted) }
+
+@media (min-width: 720px) {
+  .meal { grid-template-columns: 96px 1fr }
+  .meal-body { display: grid; grid-template-columns: 220px 1fr; column-gap: 20px; align-content: start }
+  .meal-pic { grid-row: 1 / span 6; margin: 0 }
+  .meal-body > :not(.meal-pic) { grid-column: 2 }
+}
+@media (prefers-reduced-motion: reduce) {
+  .question, .opts, .weigh { animation: none }
+  .ring-fg, .progress span { transition: none }
+}
+
+/* Home: il saluto, un pulsante, due riquadri. */
+.home { padding-top: 20px; display: grid; gap: 18px }
+.date { color: var(--muted); font-size: 15px; animation: rise 600ms var(--ease) both }
+.date::first-letter { text-transform: uppercase }
+.hi { font-size: clamp(28px, 7.8vw, 64px); line-height: 1.05 }
+.hi span { display: block; animation: rise 800ms var(--ease) both }
+.hi span + span { color: var(--green); animation-delay: 160ms }
+.hi i { font-style: normal; display: inline-block }
+.wave { transform-origin: 70% 70%; animation: wave 1.8s 900ms ease-in-out 2 }
+.yum { animation: pop 600ms 1.1s var(--ease) both }
+@keyframes wave { 0%, 60%, 100% { transform: rotate(0) } 10%, 30% { transform: rotate(16deg) } 20%, 40% { transform: rotate(-8deg) } }
+@keyframes pop { from { transform: scale(0) } 70% { transform: scale(1.25) } to { transform: scale(1) } }
+.lead { font-size: 19px; line-height: 1.45; max-width: 34ch; animation: rise 800ms 260ms var(--ease) both }
+.btn.huge { min-height: 64px; font-size: 20px; width: 100%; border-radius: 18px; animation: rise 800ms 360ms var(--ease) both }
+.redo { justify-self: center; margin-top: -8px }
+.next { display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; padding: 10px; border-radius: 18px; background: var(--surface); text-decoration: none; animation: rise 800ms 260ms var(--ease) both }
+.next img { width: 96px; height: 96px; object-fit: cover; border-radius: 12px }
+.next span { display: grid; gap: 4px; font-size: 16px; line-height: 1.3 }
+.next b { color: var(--green) }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px }
+.tile { display: grid; gap: 6px; align-content: start; padding: 18px 16px; border-radius: 18px; background: var(--surface); text-decoration: none; transition: transform 160ms var(--ease), background-color 160ms; animation: rise 800ms 460ms var(--ease) both }
+.tile + .tile { animation-delay: 540ms }
+.tile:hover { background: #d3ddc7 }
+.tile:active { transform: scale(0.97) }
+.tile .ico { font-size: 34px; line-height: 1 }
+.tile b { font: 700 19px/1.15 var(--display) }
+.tile small { font-size: 14px; color: var(--muted); line-height: 1.35 }
+
+/* Giornata */
+.back-home { display: inline-block; margin-bottom: 2px }
+.day h1, .shop-page h1, .week-page h1 { font-size: clamp(32px, 8vw, 52px); margin: 4px 0 14px }
+.chat { display: grid; gap: 8px; margin-bottom: 18px }
+.chat p { padding: 12px 16px; border-radius: 18px 18px 18px 4px; background: var(--green); color: var(--on-green); max-width: 34ch; animation: rise 500ms var(--ease) both }
+.chat p + p { animation-delay: 220ms }
+.chat .btn { justify-self: start }
+.day > .btn.huge { margin-top: 28px; animation: none }
+
+/* Spesa */
+.seg a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 18px; border-radius: 999px; font-weight: 700; text-decoration: none }
+.seg a.on { background: var(--ink); color: var(--bg) }
+.aisle h2 { font-size: 18px; letter-spacing: -0.01em; margin-bottom: 6px; color: var(--green) }
+
+/* Settimana */
+.week-list { list-style: none; padding: 0; display: grid; gap: 14px; margin-bottom: 24px }
+.wday { padding: 14px; border-radius: 18px; background: var(--surface) }
+.wday.is-today { background: var(--ink); color: var(--bg) }
+.wday h2 { font-size: 22px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 10px }
+.wday small { font: 500 14px/1 var(--text); letter-spacing: 0; opacity: 0.8 }
+.wmeals { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+.wmeals figure { margin: 0 }
+.wmeals img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; margin-bottom: 6px }
+.wmeals figcaption { font-size: 14px; line-height: 1.3 }
+.wmeals b { display: block; color: var(--green) }
+.wday.is-today b { color: var(--sage) }
+
+@media (prefers-reduced-motion: reduce) {
+  .date, .hi span, .lead, .btn.huge, .next, .tile, .chat p, .wave, .yum { animation: none }
+}
+
+/* Check-in dell'umore: scheda bianca che prende il colore della faccina scelta. */
+.checkin { padding: 18px 16px 16px; border-radius: 24px; background: color-mix(in srgb, var(--mood) 38%, #ffffff); transition: background-color 400ms var(--ease); animation: rise 700ms 200ms var(--ease) both; display: grid; gap: 14px }
+.checkin h2 { font-size: 24px; letter-spacing: -0.02em }
+.faces { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px }
+.face { display: grid; justify-items: center; gap: 6px; padding: 10px 2px 8px; border: 0; border-radius: 18px; background: transparent; cursor: pointer; transition: transform 200ms var(--ease), background-color 200ms }
+.face .emo { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--c); font-size: 28px; transition: transform 260ms var(--ease) }
+.face small { font-size: 13px; font-weight: 500 }
+.face:hover .emo { transform: scale(1.08) }
+.face:active { transform: scale(0.94) }
+.face.on { background: #ffffffb3 }
+.face.on .emo { transform: scale(1.15); animation: pop 420ms var(--ease) }
+.checkin.picked .face:not(.on) { opacity: 0.55 }
+.reply { padding: 12px 16px; border-radius: 18px 18px 18px 4px; background: #ffffff; animation: rise 420ms var(--ease) both }
+.checkin .btn.huge { animation: rise 420ms 120ms var(--ease) both; font-size: 18px }
+
+.today { display: grid; grid-template-columns: 104px 1fr; gap: 14px; align-items: center; padding: 10px; border-radius: 22px; background: #ffffff; text-decoration: none; animation: rise 700ms 320ms var(--ease) both }
+.today img { width: 104px; height: 104px; object-fit: cover; border-radius: 16px }
+.today span { display: grid; gap: 4px }
+.today small { color: var(--green); font-weight: 700; font-size: 13px }
+.today b { font: 700 18px/1.2 var(--display) }
+.today em { font-style: normal; font-size: 14px; color: var(--muted) }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; animation: rise 700ms 400ms var(--ease) both }
+.pair .btn.big { margin: 0; font-size: 16px; border-radius: 16px; padding: 0 10px }
+.tile { background: #ffffff }
+
+/* Cambia il piano */
+.change { display: grid; gap: 14px }
+.change h1 { font-size: clamp(32px, 8vw, 52px); margin-top: 4px }
+.card { display: block; padding: 18px 16px; border-radius: 22px; background: #ffffff; text-decoration: none }
+.card h2 { font-size: 21px; letter-spacing: -0.02em; margin-bottom: 12px }
+.chips { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--surface); font-weight: 500; cursor: pointer; transition: background-color 160ms, transform 160ms var(--ease) }
+.chip:active { transform: scale(0.96) }
+.chip.on { background: var(--ink); color: var(--bg) }
+.swaps { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 10px }
+.swaps li { display: grid; grid-template-columns: 56px 1fr 48px; gap: 12px; align-items: center }
+.swaps img { width: 56px; height: 56px; object-fit: cover; border-radius: 12px }
+.swaps span { display: grid; font-size: 15px; line-height: 1.3 }
+.swaps small { color: var(--green); font-weight: 700; font-size: 13px }
+.round { width: 48px; height: 48px; border: 0; border-radius: 50%; background: var(--surface); font-size: 20px; cursor: pointer; transition: transform 300ms var(--ease) }
+.round:active { transform: rotate(180deg) scale(0.92) }
+.link-card p { color: var(--muted); font-size: 15px }
+.link-card:hover { background: #f7f9f4 }
+
+@media (prefers-reduced-motion: reduce) {
+  .checkin, .today, .pair, .reply, .face.on .emo { animation: none }
+}
+
+.calm .date, .calm .hi span, .calm .wave, .calm .checkin, .calm .today, .calm .pair, .calm .tile { animation: none }

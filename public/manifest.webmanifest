@@ -1,0 +1,16 @@
+{
+  "name": "Il piatto di Sofia",
+  "short_name": "Sofia",
+  "description": "Cosa mangiare oggi, quanto e a che ora, più la spesa della settimana.",
+  "lang": "it",
+  "start_url": "/app.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#eef2e8",
+  "theme_color": "#eef2e8",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
