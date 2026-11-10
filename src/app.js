@@ -143,7 +143,7 @@ function renderCalendar() {
     <section class="cal-page" aria-labelledby="cal">
       ${back}
       <h1 id="cal">📅 Scegli un giorno</h1>
-      <p class="lead">Tocca un giorno, rispondi a qualche domanda e ti dico cosa mangiare 🎮</p>
+      <p class="lead">Tocca un giorno, rispondi a qualche domanda e ti dico cosa mangiare 🍽️</p>
       <a class="btn huge" href="${go(tomorrow)}">${store.days[tomorrow]?.answers ? 'Vedi cosa mangi domani 🌅' : 'Prepara domani 🌅'}</a>
       <p class="score"><span aria-hidden="true">${'⭐'.repeat(ready)}${'☆'.repeat(7 - ready)}</span> <b>${ready} ${ready === 1 ? 'giorno pronto' : 'giorni pronti'} su 7</b></p>
       <div class="card">
@@ -240,7 +240,7 @@ function renderQuestion() {
   view.innerHTML = `
     <section class="quiz" aria-labelledby="q">
       <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${qs.length}" aria-valuenow="${step}" aria-label="Domanda ${step + 1} di ${qs.length}"><span style="width:${pct}%"></span></div>
-      <p class="count">${isToday() ? '' : `🎮 Prepariamo ${longDate(sel)} · `}Domanda ${step + 1} di ${qs.length}</p>
+      <p class="count">${isToday() ? '' : `🗓️ Prepariamo ${longDate(sel)} · `}Domanda ${step + 1} di ${qs.length}</p>
       <h1 id="q" class="question">${esc(isToday() ? q.q : q.f || q.q)}</h1>
       ${q.weight ? `
         <div class="weigh">
@@ -310,7 +310,7 @@ function renderDay() {
   const ate = plan.meals.filter((m) => done.has(m.slot)).reduce((t, m) => t.map((v, i) => v + m.mac[i]), [0, 0, 0, 0])
   const lines = isToday()
     ? [...chat(s.answers), ...(s.answers ? [] : ['Questa è la tua giornata tipo. Se oggi va diversamente, cambiala in un minuto 🙂'])]
-    : [s.answers ? `${cap(longDate(sel))} è pronto ⭐ Quel giorno apri l'app e segui gli orari.` : `Questo è il piano tipo di quel giorno. Fai il quiz e lo preparo come vuoi tu 🎮`]
+    : [s.answers ? `${cap(longDate(sel))} è pronto ⭐ Quel giorno apri l'app e segui gli orari.` : `Questo è il piano tipo di quel giorno. Fai il quiz e lo preparo come vuoi tu 😋`]
   const prev = addDays(sel, -1), nxt = addDays(sel, 1)
 
   view.innerHTML = `
@@ -323,7 +323,7 @@ function renderDay() {
         <a href="#giorno/${nxt}">${short(nxt)} ›</a>
       </nav>
       <div class="chat">${lines.map((l) => `<p>${esc(l)}</p>`).join('')}
-        ${s.answers ? '' : `<a class="btn" href="${at('quiz')}">Fai il quiz di questo giorno 🎮</a>`}
+        ${s.answers ? '' : `<a class="btn" href="${at('quiz')}">Fai il quiz di questo giorno 📝</a>`}
         <a class="btn ghost" href="${at('cambia')}">Cambia il piano ✏️</a></div>
       <div class="rings">
         ${ring('kcal', ate[0], kcal, '')}${ring('proteine', ate[1], p, ' g')}${ring('carboidrati', ate[2], c, ' g')}${ring('grassi', ate[3], g, ' g')}
