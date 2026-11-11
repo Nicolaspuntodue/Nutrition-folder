@@ -1,5 +1,6 @@
 import './app.css'
-import { buildDay, shopping, nextOption, DAYS, WEEK, itNum } from './plan.js'
+import { answer, disliked } from './assistant.js'
+import { buildDay, shopping, nextOption, similar, MEALS, DAYS, WEEK, itNum } from './plan.js'
 
 const KEY = 'nl-sofia-v1'
 const view = document.getElementById('view')
@@ -21,10 +22,13 @@ function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {} } cat
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(store)) } catch { /* senza memoria l'app funziona lo stesso */ } }
 
 // Ogni giorno del calendario ha le sue risposte, i pasti spuntati e i cambi.
-const blank = () => ({ answers: null, mood: null, done: [], have: [], swaps: {} })
+const blank = () => ({ answers: null, mood: null, done: [], have: [], swaps: {}, custom: {} })
 let store = load()
 // La prima versione salvava un giorno solo: diventa un giorno del calendario.
 if (!store.days) store = { days: store.date ? { [store.date]: { ...blank(), ...store } } : {} }
+// Quello che l'assistente ha imparato sui gusti di Sofia e le ultime chiacchiere.
+store.prefs ??= []
+store.chat ??= []
 for (const k in store.days) if (k < addDays(today, -14)) delete store.days[k]
 const lastWeight = Object.keys(store.days).sort().map((k) => store.days[k].answers?.weight).filter(Boolean).at(-1) || 58
 
@@ -38,7 +42,8 @@ const TRAINING_DAYS = [0, 2, 4]
 // Prima delle domande la giornata si mostra con le risposte tipiche di Sofia.
 const typical = (day) => ({ day, wake: '07:00', work: day !== 0, lunch: '13:30', training: TRAINING_DAYS.includes(day) ? 'pomeriggio' : 'no', hunger: 'normale', weight: lastWeight })
 const answersFor = (d = sel) => dayState(d).answers || { ...typical(idxOf(d)), breakfast: dayState(today).answers?.breakfast }
-const planFor = (d = sel) => buildDay({ ...answersFor(d), swaps: dayState(d).swaps })
+const dayInput = (d = sel) => ({ ...answersFor(d), swaps: dayState(d).swaps, custom: dayState(d).custom })
+const planFor = (d = sel) => buildDay(dayInput(d))
 
 // f: la stessa domanda quando prepara un altro giorno. today: solo per oggi.
 const QUESTIONS = [
@@ -113,6 +118,7 @@ function renderHome(calm = false) {
       </div>
 
       <div class="tiles">
+        <a class="tile wide ask" href="#chiedi"><span class="ico" aria-hidden="true">💬</span><b>Chiedi all'assistente</b><small>"Non mi va questa colazione: cosa mangio con calorie simili?"</small></a>
         <a class="tile wide" href="#calendario"><span class="ico" aria-hidden="true">📅</span><b>Prepara domani o un altro giorno</b><small>Scegli il giorno sul calendario, rispondi a qualche domanda e sai già cosa mangiare</small></a>
         <a class="tile" href="#spesa-settimana"><span class="ico" aria-hidden="true">🛒</span><b>Spesa della settimana</b><small>Tutto quello che serve, già sommato</small></a>
         <a class="tile" href="#settimana"><span class="ico" aria-hidden="true">🗓️</span><b>La mia settimana</b><small>Cosa mangi nei prossimi 7 giorni</small></a>
@@ -221,6 +227,15 @@ function renderChange() {
   }))
 }
 
+let simOpen = null
+
+function choose(slot, id) {
+  const s = edit()
+  s.swaps = { ...s.swaps, [slot]: id }
+  s.done = s.done.filter((x) => x !== slot)
+  persist()
+}
+
 function swap(plan, slot, day) {
   const cur = plan.meals.find((m) => m.slot === slot)
   const taken = plan.meals.filter((m) => m.slot !== slot).map((m) => m.id)
@@ -323,6 +338,7 @@ function renderDay() {
         <a href="#giorno/${nxt}">${short(nxt)} ›</a>
       </nav>
       <div class="chat">${lines.map((l) => `<p>${esc(l)}</p>`).join('')}
+        <a class="btn" href="${at('chiedi')}">Chiedi all'assistente 💬</a>
         ${s.answers ? '' : `<a class="btn" href="${at('quiz')}">Fai il quiz di questo giorno 📝</a>`}
         <a class="btn ghost" href="${at('cambia')}">Cambia il piano ✏️</a></div>
       <div class="rings">
@@ -343,7 +359,11 @@ function renderDay() {
               <div class="acts">
                 ${ahead ? '' : `<button type="button" class="btn ${done.has(m.slot) ? 'ghost' : ''} done" data-slot="${m.slot}" aria-pressed="${done.has(m.slot)}">${done.has(m.slot) ? 'Fatto ✅' : 'L\'ho mangiato'}</button>`}
                 <button type="button" class="btn ghost swap" data-slot="${m.slot}">Non mi va, cambialo 🔄</button>
+                <button type="button" class="btn ghost sim" data-slot="${m.slot}" aria-expanded="${simOpen === m.slot}">Calorie simili ⚖️</button>
               </div>
+              ${simOpen === m.slot ? `<ul class="sims">${similar(dayInput(), m.slot, Infinity).filter((o) => !disliked(o.id, store.prefs)).slice(0, 3).map((o) => `
+                <li><img src="${o.img}" alt="" width="720" height="720" loading="lazy"><span><b>${esc(o.name)}</b><small>${itNum(o.mac[0])} kcal · ${itNum(o.mac[1])} g di proteine</small></span>
+                <button type="button" class="btn pick" data-slot="${m.slot}" data-id="${o.id}">Scegli</button></li>`).join('')}</ul>` : ''}
             </div>
           </li>`).join('')}
       </ol>
@@ -358,6 +378,18 @@ function renderDay() {
     st.done = done.has(slot) ? st.done.filter((x) => x !== slot) : [...st.done, slot]
     persist()
     renderDay()
+  }))
+  const keep = (slot) => document.querySelector(`.sim[data-slot="${slot}"]`)?.closest('.meal').scrollIntoView({ block: 'start' })
+  view.querySelectorAll('.sim').forEach((b) => b.addEventListener('click', () => {
+    simOpen = simOpen === b.dataset.slot ? null : b.dataset.slot
+    renderDay()
+    keep(b.dataset.slot)
+  }))
+  view.querySelectorAll('.pick').forEach((b) => b.addEventListener('click', () => {
+    choose(b.dataset.slot, b.dataset.id)
+    simOpen = null
+    renderDay()
+    keep(b.dataset.slot)
   }))
   view.querySelectorAll('.swap').forEach((b) => b.addEventListener('click', () => {
     const slot = b.dataset.slot
@@ -424,6 +456,107 @@ function renderWeek() {
     </section>`
 }
 
+/* ---------- Chiedi all'assistente ---------- */
+
+const IDEAS = ['Non mi va la colazione, cosa mangio con calorie simili?', 'Stasera ho voglia di pesce, cosa mi consigli?', 'Ho fame prima dell\'allenamento, cosa posso mangiare?']
+
+// Le proposte arrivano dal catalogo (id) o inventate dall'assistente (ingredienti): i conti li fa sempre l'app.
+function preview(p) {
+  const id = p.id || 'prova'
+  const custom = p.id ? dayState().custom : { ...dayState().custom, prova: { name: p.name, photo: p.photo, ing: p.ing } }
+  return buildDay({ ...answersFor(), swaps: { ...dayState().swaps, [p.slot]: id }, custom }).meals.find((m) => m.slot === p.slot)
+}
+const propName = (p) => (p.id ? MEALS[p.id].name : p.name)
+
+function card(p, i, j) {
+  const m = preview(p)
+  return `<div class="prop"><img src="${m?.img || `/img/meals/${p.photo || p.id}.jpg`}" alt="" width="720" height="720" loading="lazy">
+    <span><small>${p.slot}</small><b>${esc(propName(p))}</b>${m ? `<em>${itNum(m.mac[0])} kcal · ${itNum(m.mac[1])} g di proteine</em>` : ''}</span>
+    <div class="prop-acts">
+      ${m ? `<button type="button" class="btn put" data-i="${i}" data-j="${j}">Scegli questo ✅</button>` : ''}
+      <button type="button" class="round like" data-i="${i}" data-j="${j}" data-v="1" aria-label="Mi piace">👍</button>
+      <button type="button" class="round like" data-i="${i}" data-j="${j}" data-v="0" aria-label="Non mi piace">👎</button>
+    </div></div>`
+}
+
+function renderAsk() {
+  restart.hidden = true
+  const busy = store.chat.at(-1)?.pending
+  view.innerHTML = `
+    <section class="ask-page" aria-labelledby="a">
+      ${backCal()}
+      <h1 id="a">💬 Chiedi all'assistente</h1>
+      <p class="lead">${isToday() ? 'Oggi' : cap(longDate(sel))}: chiedimi cosa mangiare o cosa cambiare. Più mi racconti, più imparo i tuoi gusti.</p>
+      <ol class="talk" aria-live="polite">
+        ${store.chat.length ? '' : `<li class="bot"><p>Ciao ${esc(name)} 👋 Se una proposta non ti va, dimmelo e te ne trovo un'altra con calorie simili.</p></li>`}
+        ${store.chat.map((m, i) => `<li class="${m.role === 'user' ? 'me' : 'bot'}${m.pending ? ' wait' : ''}"><p>${esc(m.text)}</p>${(m.proposals || []).map((p, j) => card(p, i, j)).join('')}</li>`).join('')}
+      </ol>
+      ${store.chat.length ? '' : `<div class="chips ideas">${IDEAS.map((t) => `<button type="button" class="chip idea">${esc(t)}</button>`).join('')}</div>`}
+      <form class="composer">
+        <label class="sr" for="q">La tua domanda</label>
+        <textarea id="q" rows="2" maxlength="600" placeholder="Scrivi qui…" ${busy ? 'disabled' : ''}></textarea>
+        <button class="btn" type="submit" ${busy ? 'disabled' : ''}>Invia</button>
+      </form>
+      <p class="hint">Gratis e sul tuo telefono: quello che mi dici resta qui 🔒</p>
+      <details class="card prefs"><summary>🧠 Cosa so di te (${store.prefs.length})</summary>
+        ${store.prefs.length ? `<ul>${store.prefs.map((p, i) => `<li><span>${esc(p)}</span><button type="button" class="round forget" data-i="${i}" aria-label="Dimentica: ${esc(p)}">✕</button></li>`).join('')}</ul>` : '<p class="hint">Ancora niente: dimmi cosa ti piace e cosa no, o usa 👍 e 👎.</p>'}
+      </details>
+      ${store.chat.length ? '<button type="button" class="link clear">Nuova chiacchierata</button>' : ''}
+    </section>`
+
+  const q = view.querySelector('#q')
+  view.querySelector('.composer').addEventListener('submit', (e) => {
+    e.preventDefault()
+    const text = q.value.trim()
+    if (text) ask(text)
+  })
+  q.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); view.querySelector('.composer').requestSubmit() } })
+  view.querySelectorAll('.idea').forEach((b) => b.addEventListener('click', () => ask(b.textContent)))
+  view.querySelectorAll('.put').forEach((b) => b.addEventListener('click', () => {
+    const p = store.chat[b.dataset.i].proposals[b.dataset.j]
+    let id = p.id
+    if (!id) {
+      id = `ai${Date.now()}`
+      const s = edit()
+      s.custom = { ...s.custom, [id]: { name: p.name, photo: p.photo, ing: p.ing } }
+    }
+    choose(p.slot, id)
+    location.hash = at('giorno')
+  }))
+  view.querySelectorAll('.like').forEach((b) => b.addEventListener('click', () => {
+    const n = propName(store.chat[b.dataset.i].proposals[b.dataset.j])
+    const yes = `Le piace: ${n}`, no = `Non le piace: ${n}`
+    store.prefs = [...store.prefs.filter((x) => x !== yes && x !== no), b.dataset.v === '1' ? yes : no].slice(-30)
+    persist()
+    renderAsk()
+  }))
+  view.querySelectorAll('.forget').forEach((b) => b.addEventListener('click', () => {
+    store.prefs.splice(+b.dataset.i, 1)
+    persist()
+    renderAsk()
+    view.querySelector('.prefs').open = true
+  }))
+  view.querySelector('.clear')?.addEventListener('click', () => { store.chat = []; persist(); renderAsk() })
+  view.querySelector('.talk li:last-child')?.scrollIntoView({ block: 'end' })
+}
+
+// Risponde l'assistente locale: niente internet, niente costi. Una piccola pausa per sembrare una chiacchierata.
+function ask(text) {
+  store.chat.push({ role: 'user', text }, { role: 'assistant', text: 'Ci penso un attimo… 🤔', pending: true })
+  renderAsk()
+  const reply = answer(text, dayInput(), store.prefs)
+  for (const l of reply.learned) {
+    const what = l.split(': ')[1]
+    store.prefs = [...store.prefs.filter((x) => x.split(': ')[1] !== what), l].slice(-30)
+  }
+  setTimeout(() => {
+    store.chat.splice(-1, 1, { role: 'assistant', text: reply.reply, proposals: reply.proposals })
+    store.chat = store.chat.slice(-30)
+    persist()
+    if (location.hash.startsWith('#chiedi')) renderAsk()
+  }, 450)
+}
+
 /* ---------- Navigazione ---------- */
 
 function route() {
@@ -436,8 +569,9 @@ function route() {
   else if (h === 'settimana') renderWeek()
   else if (h === 'cambia') renderChange()
   else if (h === 'calendario') renderCalendar()
+  else if (h === 'chiedi') renderAsk()
   else renderHome()
-  scrollTo(0, 0)
+  if (h !== 'chiedi') scrollTo(0, 0)
 }
 restart.addEventListener('click', () => { location.hash = at('quiz') })
 addEventListener('hashchange', route)

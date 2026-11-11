@@ -52,21 +52,40 @@ export const FOODS = {
   'Marmellata': [220, 0.5, 55, 0],
   'Miele': [304, 0.3, 82, 0],
   'Olio extravergine': [900, 0, 0, 100],
+  'Bresaola': [151, 32, 0.4, 2],
+  'Salmone affumicato': [117, 18, 0, 4.5],
+  'Gamberi': [85, 18, 0, 1],
+  'Ceci in scatola': [120, 7, 17, 2.5],
+  'Lenticchie lessate': [116, 9, 20, 0.4],
+  'Formaggio spalmabile light': [150, 8, 4, 11],
+  'Couscous': [360, 12.8, 72, 1.1],
+  'Gnocchi di patate': [150, 4, 33, 0.3],
+  'Granola': [450, 10, 64, 16],
+  'Cacao amaro': [230, 20, 58, 14],
+  'Fragole': [32, 0.7, 7.7, 0.3],
+  'Kiwi': [61, 1.1, 15, 0.5],
+  'Arancia': [47, 0.9, 12, 0.1],
+  'Spinaci': [23, 2.9, 3.6, 0.4],
+  'Funghi': [22, 3.1, 3.3, 0.3],
+  'Rucola': [25, 2.6, 3.7, 0.7],
+  'Cipolla': [40, 1.1, 9, 0.1],
+  'Pesto': [450, 5, 6, 45],
+  'Salsa di soia': [53, 8, 5, 0],
   'Pizza margherita': [800, 32, 110, 26], // una pizza intera = 100
 }
 
 // Carboidrati che si possono allargare o stringere per arrivare al fabbisogno.
 // Il riso resta fisso a 80 g; pollo, tacchino e macinato fissi a 250 g.
-const SCALABLE = new Set(['Pasta', 'Rigatoni integrali', 'Pane integrale', 'Panino da hamburger', 'Pane per toast', 'Piadina',
-  'Corn flakes', "Fiocchi d'avena", 'Gallette di riso', 'Patate', 'Patate dolci'])
+export const SCALABLE = new Set(['Pasta', 'Rigatoni integrali', 'Pane integrale', 'Panino da hamburger', 'Pane per toast', 'Piadina',
+  'Corn flakes', "Fiocchi d'avena", 'Gallette di riso', 'Patate', 'Patate dolci', 'Couscous', 'Gnocchi di patate'])
 
 const AISLE = {
-  Carne: ['Petto di pollo', 'Petto di tacchino', 'Manzo macinato magro', 'Bistecca magra di manzo', 'Prosciutto cotto'],
-  Pesce: ['Salmone', 'Tonno al naturale', 'Merluzzo'],
-  'Frigo e latticini': ['Uova', 'Yogurt greco 2%', 'Yogurt bianco', 'Latte parz. scremato', 'Fiocchi di latte', 'Ricotta', 'Feta', 'Mozzarella', 'Formaggio a fette', 'Parmigiano'],
-  'Pane, pasta e cereali': ['Riso', 'Pasta', 'Rigatoni integrali', 'Pane integrale', 'Panino da hamburger', 'Pane per toast', 'Piadina', 'Corn flakes', "Fiocchi d'avena", 'Gallette di riso', 'Mais in scatola'],
-  'Frutta e verdura': ['Banana', 'Mela', 'Avocado', 'Patate', 'Patate dolci', 'Pomodori', 'Pomodorini', 'Zucchine', 'Cetrioli', 'Asparagi', 'Fagiolini', 'Peperoni', 'Piselli', 'Lattuga'],
-  Dispensa: ['Passata di pomodoro', 'Burro di arachidi', 'Mandorle', 'Crema di nocciole', 'Marmellata', 'Miele', 'Olio extravergine'],
+  Carne: ['Petto di pollo', 'Petto di tacchino', 'Manzo macinato magro', 'Bistecca magra di manzo', 'Prosciutto cotto', 'Bresaola'],
+  Pesce: ['Salmone', 'Salmone affumicato', 'Tonno al naturale', 'Merluzzo', 'Gamberi'],
+  'Frigo e latticini': ['Uova', 'Yogurt greco 2%', 'Yogurt bianco', 'Latte parz. scremato', 'Fiocchi di latte', 'Ricotta', 'Feta', 'Mozzarella', 'Formaggio a fette', 'Formaggio spalmabile light', 'Parmigiano', 'Pesto', 'Gnocchi di patate'],
+  'Pane, pasta e cereali': ['Riso', 'Pasta', 'Rigatoni integrali', 'Couscous', 'Pane integrale', 'Panino da hamburger', 'Pane per toast', 'Piadina', 'Corn flakes', "Fiocchi d'avena", 'Granola', 'Gallette di riso', 'Mais in scatola', 'Ceci in scatola', 'Lenticchie lessate'],
+  'Frutta e verdura': ['Banana', 'Mela', 'Fragole', 'Kiwi', 'Arancia', 'Avocado', 'Patate', 'Patate dolci', 'Pomodori', 'Pomodorini', 'Zucchine', 'Cetrioli', 'Asparagi', 'Fagiolini', 'Peperoni', 'Piselli', 'Lattuga', 'Spinaci', 'Funghi', 'Rucola', 'Cipolla'],
+  Dispensa: ['Passata di pomodoro', 'Burro di arachidi', 'Mandorle', 'Crema di nocciole', 'Cacao amaro', 'Marmellata', 'Miele', 'Salsa di soia', 'Olio extravergine'],
 }
 
 export const MEALS = {
@@ -78,10 +97,6 @@ export const MEALS = {
     ing: [['Yogurt greco 2%', 200], ['Banana', 120], ["Fiocchi d'avena", 40], ['Miele', 10]] },
   yogurtPb: { name: 'Yogurt greco con banana e burro di arachidi', recipe: 2, kind: 'dolce',
     ing: [['Yogurt greco 2%', 200], ['Banana', 120], ["Fiocchi d'avena", 30], ['Burro di arachidi', 15]] },
-  latteFette: { name: 'Latte, toast con marmellata e burro di arachidi', kind: 'dolce',
-    ing: [['Latte parz. scremato', 250], ['Pane per toast', 60], ['Marmellata', 20], ['Burro di arachidi', 10]] },
-  latteCereali: { name: 'Latte, cereali e banana', kind: 'dolce',
-    ing: [['Latte parz. scremato', 250], ['Corn flakes', 50], ['Banana', 120]] },
   pancake: { name: 'Pancake con banana e crema di nocciole', recipe: 10, kind: 'dolce',
     ing: [['Banana', 150], ['Uova', 110], ["Fiocchi d'avena", 50], ['Crema di nocciole', 15]] },
 
@@ -115,8 +130,6 @@ export const MEALS = {
 
   gallette: { name: 'Gallette, burro di arachidi e banana', recipe: 11,
     ing: [['Gallette di riso', 30], ['Burro di arachidi', 15], ['Banana', 120]] },
-  fetteBanana: { name: 'Toast con marmellata e banana',
-    ing: [['Pane per toast', 50], ['Marmellata', 20], ['Banana', 120]] },
   // Opzioni in più, per il pulsante "Cambia piatto".
   toastProsciutto: { name: 'Toast prosciutto cotto e formaggio', kind: 'salata',
     ing: [['Pane per toast', 80], ['Prosciutto cotto', 60], ['Formaggio a fette', 20]] },
@@ -147,22 +160,110 @@ export const MEALS = {
   toastBanana: { name: 'Due toast con banana e miele', ing: [['Pane per toast', 60], ['Banana', 120], ['Miele', 10]] },
   yogurtMela: { name: 'Yogurt bianco con mela e miele', ing: [['Yogurt bianco', 150], ['Mela', 150], ['Miele', 10]] },
   galletteMiele: { name: 'Gallette con miele e una mela', ing: [['Gallette di riso', 25], ['Miele', 15], ['Mela', 150]] },
+
+  // Quaranta ricette in più (novembre 2026).
+  porridgeBanana: { name: "Porridge d'avena con yogurt, banana e cacao", kind: 'dolce',
+    ing: [["Fiocchi d'avena", 50], ['Yogurt bianco', 150], ['Banana', 120], ['Cacao amaro', 5]] },
+  toastRicotta: { name: 'Toast con ricotta, miele e fragole', kind: 'dolce',
+    ing: [['Pane per toast', 70], ['Ricotta', 80], ['Miele', 10], ['Fragole', 100]] },
+  yogurtGranola: { name: 'Yogurt bianco con granola e kiwi', kind: 'dolce',
+    ing: [['Yogurt bianco', 170], ['Granola', 40], ['Kiwi', 100]] },
+  pancakeFragole: { name: "Pancake d'avena con fragole e miele", kind: 'dolce',
+    ing: [['Uova', 110], ["Fiocchi d'avena", 50], ['Fragole', 100], ['Miele', 10]] },
+  avenaMela: { name: 'Avena e yogurt con mela e miele', kind: 'dolce',
+    ing: [['Yogurt bianco', 170], ["Fiocchi d'avena", 50], ['Mela', 150], ['Miele', 5]] },
+  toastNoccioleArancia: { name: 'Toast con crema di nocciole e banana, con un\'arancia', kind: 'dolce',
+    ing: [['Pane per toast', 70], ['Crema di nocciole', 15], ['Banana', 100], ['Arancia', 200]] },
+  frenchToast: { name: 'French toast con fragole e miele', kind: 'dolce',
+    ing: [['Pane per toast', 80], ['Uova', 55], ['Fragole', 100], ['Miele', 10]] },
+  cerealiFragole: { name: 'Corn flakes con yogurt bianco e fragole', kind: 'dolce',
+    ing: [['Corn flakes', 40], ['Yogurt bianco', 150], ['Fragole', 100], ['Miele', 5]] },
+  toastBresaola: { name: 'Toast con bresaola, rucola e formaggio spalmabile', kind: 'salata',
+    ing: [['Pane per toast', 80], ['Bresaola', 50], ['Rucola', 20], ['Formaggio spalmabile light', 30]] },
+  uovaSpinaci: { name: 'Uova strapazzate con spinaci e pane', kind: 'salata',
+    ing: [['Uova', 110], ['Spinaci', 100], ['Pane integrale', 80], ['Olio extravergine', 5]] },
+  toastSalmone: { name: 'Toast con salmone affumicato e formaggio spalmabile', kind: 'salata',
+    ing: [['Pane integrale', 80], ['Salmone affumicato', 60], ['Formaggio spalmabile light', 30]] },
+  omelette: { name: 'Omelette prosciutto e formaggio con pane', kind: 'salata',
+    ing: [['Uova', 110], ['Prosciutto cotto', 40], ['Formaggio a fette', 20], ['Pane integrale', 60]] },
+  piadinaUova: { name: 'Piadina con uova strapazzate e pomodorini', kind: 'salata',
+    ing: [['Piadina', 70], ['Uova', 110], ['Pomodorini', 80]] },
+  toastFiocchi: { name: 'Pane con fiocchi di latte e pomodorini', kind: 'salata',
+    ing: [['Pane integrale', 80], ['Fiocchi di latte', 150], ['Pomodorini', 100], ['Olio extravergine', 5]] },
+
+  pastaPesto: { name: 'Pasta al pesto con pollo e pomodorini',
+    ing: [['Pasta', 100], ['Petto di pollo', 250], ['Pesto', 20], ['Pomodorini', 100]] },
+  couscousPollo: { name: 'Couscous con pollo, zucchine e peperoni',
+    ing: [['Couscous', 80], ['Petto di pollo', 250], ['Zucchine', 100], ['Peperoni', 100], ['Olio extravergine', 10]] },
+  gnocchiPomodoro: { name: 'Gnocchi al pomodoro con mozzarella',
+    ing: [['Gnocchi di patate', 300], ['Passata di pomodoro', 150], ['Mozzarella', 80], ['Parmigiano', 10], ['Olio extravergine', 5]] },
+  risottoFunghi: { name: 'Risotto ai funghi con tacchino alla piastra',
+    ing: [['Riso', 80], ['Funghi', 150], ['Petto di tacchino', 250], ['Parmigiano', 10], ['Olio extravergine', 5]] },
+  risoGamberi: { name: 'Riso saltato con gamberi, piselli e uovo',
+    ing: [['Riso', 80], ['Gamberi', 200], ['Piselli', 80], ['Uova', 55], ['Salsa di soia', 10], ['Olio extravergine', 10]] },
+  pastaGamberi: { name: 'Pasta con gamberi, zucchine e pomodorini',
+    ing: [['Pasta', 100], ['Gamberi', 200], ['Zucchine', 150], ['Pomodorini', 80], ['Olio extravergine', 10]] },
+  pastaLenticchie: { name: 'Pasta e lenticchie',
+    ing: [['Pasta', 90], ['Lenticchie lessate', 200], ['Passata di pomodoro', 100], ['Parmigiano', 10], ['Olio extravergine', 10]] },
+  polloCeci: { name: 'Insalata di pollo, ceci, pomodori e feta con pane', cold: true,
+    ing: [['Petto di pollo', 250], ['Ceci in scatola', 150], ['Pomodori', 150], ['Feta', 30], ['Pane integrale', 60], ['Olio extravergine', 10]] },
+  tacchinoPatate: { name: 'Tacchino arrosto, patate e fagiolini',
+    ing: [['Petto di tacchino', 250], ['Patate', 300], ['Fagiolini', 150], ['Olio extravergine', 10]] },
+  salmoneCouscous: { name: 'Salmone al forno con couscous e zucchine',
+    ing: [['Salmone', 150], ['Couscous', 70], ['Zucchine', 150], ['Olio extravergine', 5]] },
+  merluzzoRiso: { name: 'Merluzzo in padella con pomodorini e riso',
+    ing: [['Merluzzo', 200], ['Riso', 80], ['Pomodorini', 150], ['Olio extravergine', 10]] },
+  piadinaTacchino: { name: 'Piadina con tacchino, formaggio spalmabile e rucola', cold: true,
+    ing: [['Piadina', 100], ['Petto di tacchino', 250], ['Formaggio spalmabile light', 30], ['Rucola', 30], ['Pomodori', 80]] },
+  pastaZucchine: { name: 'Pasta con zucchine, uova e parmigiano',
+    ing: [['Pasta', 100], ['Zucchine', 200], ['Uova', 110], ['Parmigiano', 15], ['Olio extravergine', 5]] },
+  polloSpinaci: { name: 'Pollo al limone con riso e spinaci',
+    ing: [['Petto di pollo', 250], ['Riso', 80], ['Spinaci', 150], ['Olio extravergine', 10]] },
+  polpetteTacchino: { name: 'Polpette di tacchino al forno con patate dolci',
+    ing: [['Petto di tacchino', 250], ['Patate dolci', 300], ['Parmigiano', 10], ['Olio extravergine', 5]] },
+  insalataRiso: { name: 'Insalata di riso con tonno, uovo e piselli', cold: true,
+    ing: [['Riso', 80], ['Tonno al naturale', 110], ['Uova', 55], ['Piselli', 60], ['Mais in scatola', 40], ['Olio extravergine', 5]] },
+  bresaolaRucola: { name: 'Bresaola, rucola e grana con pane', cold: true,
+    ing: [['Bresaola', 100], ['Rucola', 50], ['Parmigiano', 20], ['Pane integrale', 100], ['Olio extravergine', 5]] },
+  frittataPatate: { name: 'Frittata di patate e cipolla con pane',
+    ing: [['Uova', 165], ['Patate', 200], ['Cipolla', 50], ['Pane integrale', 40], ['Olio extravergine', 10]] },
+  bisteccaRucola: { name: 'Bistecca con rucola, pomodorini e patate al forno',
+    ing: [['Bistecca magra di manzo', 180], ['Rucola', 50], ['Pomodorini', 100], ['Patate', 300], ['Olio extravergine', 10]] },
+  salmoneSpinaci: { name: 'Salmone alla piastra con spinaci e patate',
+    ing: [['Salmone', 150], ['Spinaci', 150], ['Patate', 300], ['Olio extravergine', 5]] },
+  couscousTonno: { name: 'Couscous freddo con tonno, ceci e pomodorini', cold: true,
+    ing: [['Couscous', 70], ['Tonno al naturale', 110], ['Ceci in scatola', 100], ['Pomodorini', 120], ['Olio extravergine', 5]] },
+  risoMessicano: { name: 'Riso con pollo, avocado, mais e pomodori',
+    ing: [['Riso', 80], ['Petto di pollo', 250], ['Avocado', 50], ['Mais in scatola', 60], ['Pomodori', 100], ['Olio extravergine', 5]] },
+
+  kiwiGallette: { name: 'Due kiwi e gallette di riso', ing: [['Gallette di riso', 25], ['Kiwi', 200]] },
+  aranciaMandorle: { name: 'Arancia e qualche mandorla', ing: [['Arancia', 200], ['Mandorle', 15]] },
+  toastNocciole: { name: 'Toast con crema di nocciole', ing: [['Pane per toast', 40], ['Crema di nocciole', 10]] },
+  melaBurro: { name: 'Mela con burro di arachidi', ing: [['Mela', 150], ['Burro di arachidi', 15]] },
 }
 
 // Le alternative che il pulsante "Cambia piatto" fa girare, per tipo di pasto.
 const MAINS = ['salmoneRiso', 'polloPatateDolci', 'pastaRagu', 'polloPatate', 'rigatoniTonno', 'polloRiso', 'pastaFredda', 'bistecca',
   'risoManzo', 'salmonePatate', 'insalataTonno', 'uovaMozzarella', 'tacchinoRiso', 'pastaTonno', 'polpette', 'risoTonnoMozzarella',
-  'piadinaPollo', 'merluzzo', 'frittata', 'polloPeperoni', 'pokeSalmone', 'macinatoPiselli']
-const PRE = ['gallette', 'fetteBanana', 'bananaMandorle', 'bananaSola', 'toastBanana', 'yogurtMela', 'galletteMiele']
-const BREAKFAST = { salata: ['toast', 'uovaFeta', 'toastProsciutto'], dolce: ['latteFette', 'latteCereali', 'toastPbBanana', 'pancake'] }
+  'piadinaPollo', 'merluzzo', 'frittata', 'polloPeperoni', 'pokeSalmone', 'macinatoPiselli',
+  'pastaPesto', 'couscousPollo', 'gnocchiPomodoro', 'risottoFunghi', 'risoGamberi', 'pastaGamberi', 'pastaLenticchie', 'polloCeci',
+  'tacchinoPatate', 'salmoneCouscous', 'merluzzoRiso', 'piadinaTacchino', 'pastaZucchine', 'polloSpinaci', 'polpetteTacchino',
+  'insalataRiso', 'bresaolaRucola', 'frittataPatate', 'bisteccaRucola', 'salmoneSpinaci', 'couscousTonno', 'risoMessicano']
+const PRE = ['gallette', 'bananaMandorle', 'bananaSola', 'toastBanana', 'yogurtMela', 'galletteMiele',
+  'kiwiGallette', 'aranciaMandorle', 'toastNocciole', 'melaBurro']
+const BREAKFAST = {
+  salata: ['toast', 'uovaFeta', 'toastProsciutto', 'toastBresaola', 'uovaSpinaci', 'toastSalmone', 'omelette', 'piadinaUova', 'toastFiocchi'],
+  dolce: ['toastPbBanana', 'pancake', 'porridgeBanana', 'toastRicotta', 'yogurtGranola', 'pancakeFragole',
+    'avenaMela', 'toastNoccioleArancia', 'frenchToast', 'cerealiFragole'],
+}
 
 export function options(slot, id, day) {
   if (slot === 'Pre-allenamento') return PRE
   if (slot === 'Colazione') {
-    const kind = MEALS[id].kind
+    const kind = MEALS[id]?.kind || 'dolce'
     return kind === 'dolce' && (day === 1 || day === 4) ? [day === 1 ? 'yogurt' : 'yogurtPb', ...BREAKFAST.dolce] : BREAKFAST[kind]
   }
-  return MEALS[id].treat ? [id, ...MAINS] : MAINS
+  return MEALS[id]?.treat ? [id, ...MAINS] : MAINS
 }
 
 // Un'alternativa a caso, diversa dal piatto attuale e da quelli già nella giornata.
@@ -173,10 +274,13 @@ export function nextOption(slot, id, day, taken = [], rnd = Math.random) {
 
 // La voglia del giorno: se pranzo e cena non la accontentano, il pranzo diventa un piatto di quel tipo.
 export const CRAVINGS = {
-  pasta: ['pastaRagu', 'rigatoniTonno', 'pastaFredda', 'pastaTonno'],
-  riso: ['salmoneRiso', 'polloRiso', 'risoManzo', 'tacchinoRiso', 'risoTonnoMozzarella', 'polloPeperoni', 'pokeSalmone'],
-  carne: ['polloPatateDolci', 'polloPatate', 'polloRiso', 'bistecca', 'risoManzo', 'tacchinoRiso', 'polpette', 'piadinaPollo', 'polloPeperoni', 'macinatoPiselli'],
-  pesce: ['salmoneRiso', 'rigatoniTonno', 'pastaFredda', 'salmonePatate', 'insalataTonno', 'pastaTonno', 'risoTonnoMozzarella', 'merluzzo', 'pokeSalmone'],
+  pasta: ['pastaRagu', 'rigatoniTonno', 'pastaFredda', 'pastaTonno', 'pastaPesto', 'pastaGamberi', 'pastaLenticchie', 'pastaZucchine', 'gnocchiPomodoro'],
+  riso: ['salmoneRiso', 'polloRiso', 'risoManzo', 'tacchinoRiso', 'risoTonnoMozzarella', 'polloPeperoni', 'pokeSalmone',
+    'risottoFunghi', 'risoGamberi', 'merluzzoRiso', 'polloSpinaci', 'insalataRiso', 'risoMessicano'],
+  carne: ['polloPatateDolci', 'polloPatate', 'polloRiso', 'bistecca', 'risoManzo', 'tacchinoRiso', 'polpette', 'piadinaPollo', 'polloPeperoni', 'macinatoPiselli',
+    'pastaPesto', 'couscousPollo', 'risottoFunghi', 'polloCeci', 'tacchinoPatate', 'piadinaTacchino', 'polloSpinaci', 'polpetteTacchino', 'bresaolaRucola', 'bisteccaRucola', 'risoMessicano'],
+  pesce: ['salmoneRiso', 'rigatoniTonno', 'pastaFredda', 'salmonePatate', 'insalataTonno', 'pastaTonno', 'risoTonnoMozzarella', 'merluzzo', 'pokeSalmone',
+    'risoGamberi', 'pastaGamberi', 'salmoneCouscous', 'merluzzoRiso', 'insalataRiso', 'salmoneSpinaci', 'couscousTonno'],
 }
 
 export const DAYS = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica']
@@ -185,11 +289,11 @@ export const DAYS = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'
 export const WEEK = [
   { colazione: 'toast', pranzo: 'salmoneRiso', cena: 'polloPatateDolci', pre: 'gallette' },
   { colazione: 'yogurt', pranzo: 'pastaRagu', cena: 'polloPatate', pre: 'gallette' },
-  { colazione: 'latteFette', pranzo: 'rigatoniTonno', cena: 'polloRiso', pre: 'gallette' },
-  { colazione: 'latteCereali', pranzo: 'pastaFredda', cena: 'bistecca', pre: 'fetteBanana' },
-  { colazione: 'yogurtPb', pranzo: 'risoManzo', cena: 'salmonePatate', pre: 'fetteBanana' },
+  { colazione: 'toastRicotta', pranzo: 'rigatoniTonno', cena: 'polloRiso', pre: 'gallette' },
+  { colazione: 'cerealiFragole', pranzo: 'pastaFredda', cena: 'bistecca', pre: 'toastBanana' },
+  { colazione: 'yogurtPb', pranzo: 'risoManzo', cena: 'salmonePatate', pre: 'toastBanana' },
   { colazione: 'uovaFeta', pranzo: 'insalataTonno', cena: 'pizza', pre: 'gallette' },
-  { colazione: 'pancake', pranzo: 'burger', cena: 'uovaMozzarella', pre: 'fetteBanana' },
+  { colazione: 'pancake', pranzo: 'burger', cena: 'uovaMozzarella', pre: 'toastBanana' },
 ]
 
 export function macros(ing) {
@@ -216,7 +320,7 @@ function pickBreakfast(day, pref) {
   if (day === 1) return 'yogurt'
   if (day === 4) return 'yogurtPb'
   if (day >= 5) return 'pancake'
-  return day % 2 ? 'latteCereali' : 'latteFette'
+  return day % 2 ? 'cerealiFragole' : 'toastRicotta'
 }
 
 const toMin = (hhmm) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m }
@@ -231,7 +335,9 @@ export function buildDay(a) {
   const training = a.training || 'no'
   const lunch = !work || a.lunch === 'libera' ? toMin('13:00') : toMin(a.lunch || '13:30')
   const sw = a.swaps || {}
-  const pick = (slot, id) => (sw[slot] && MEALS[sw[slot]] ? sw[slot] : id)
+  // I piatti inventati dall'assistente arrivano in a.custom, con il loro id.
+  const meal = (id) => a.custom?.[id] || MEALS[id]
+  const pick = (slot, id) => (sw[slot] && meal(sw[slot]) ? sw[slot] : id)
   const slots = []
 
   if (training === 'mattina') {
@@ -251,7 +357,7 @@ export function buildDay(a) {
   const dinnerId = pick('Cena', WEEK[day].cena)
   const lunchNote = !work ? null
     : a.lunch === 'libera' ? 'Niente pausa fissa: tienilo pronto in borsa e mangialo appena hai venti minuti.'
-      : MEALS[lunchId].cold ? 'Si mangia freddo: preparalo la sera prima e portalo al salone.'
+      : meal(lunchId).cold ? 'Si mangia freddo: preparalo la sera prima e portalo al salone.'
         : 'Preparalo la sera prima e scaldalo al salone.'
   slots.push({ slot: 'Pranzo', at: lunch, id: lunchId, note: [cravingNote, lunchNote].filter(Boolean).join(' ') || null })
 
@@ -263,12 +369,12 @@ export function buildDay(a) {
   }
   slots.push({ slot: 'Cena', at: dinner, id: dinnerId,
     note: training === 'sera' ? "Dopo l'allenamento: proteine e carboidrati per il recupero."
-      : MEALS[dinnerId].treat ? 'La serata libera: goditela, è già nei conti.' : null })
+      : meal(dinnerId).treat ? 'La serata libera: goditela, è già nei conti.' : null })
 
   const goal = target({ weight: a.weight, work, training, hunger: a.hunger })
   // Stringe o allarga solo i carboidrati elastici per arrivare al fabbisogno (tra -30% e +40%).
   let fixed = 0, flex = 0
-  for (const s of slots) for (const [f, g] of MEALS[s.id].ing) {
+  for (const s of slots) for (const [f, g] of meal(s.id).ing) {
     const k = FOODS[f][0] * g / 100
     if (SCALABLE.has(f)) flex += k
     else fixed += k
@@ -276,12 +382,26 @@ export function buildDay(a) {
   const factor = Math.min(1.4, Math.max(0.7, (goal.kcal - fixed) / flex))
 
   const meals = slots.sort((x, y) => x.at - y.at).map((s) => {
-    const m = MEALS[s.id]
+    const m = meal(s.id)
     const ing = m.ing.map(([f, g]) => [f, SCALABLE.has(f) ? Math.round(g * factor / 5) * 5 : g])
-    return { ...s, time: fmt(s.at), name: m.name, recipe: m.recipe, img: `/img/meals/${s.id}.jpg`, treat: !!m.treat, ing, mac: macros(ing) }
+    return { ...s, time: fmt(s.at), name: m.name, recipe: m.recipe, img: `/img/meals/${m.photo || s.id}.jpg`, custom: !!a.custom?.[s.id], treat: !!m.treat, ing, mac: macros(ing) }
   })
   const total = meals.reduce((t, m) => t.map((v, i) => v + m.mac[i]), [0, 0, 0, 0])
   return { day: DAYS[day], goal, meals, total }
+}
+
+// Piatti dello stesso tipo con calorie e proteine più vicine al pasto attuale, ai conti di quella giornata.
+// Tutte le colazioni possibili quel giorno, dolci e salate (lo yogurt greco solo martedì e venerdì).
+export const breakfasts = (day) => [...options('Colazione', 'toast', day), ...options('Colazione', 'toastRicotta', day)]
+
+export function similar(a, slot, n = 3, pool) {
+  const base = buildDay(a)
+  const cur = base.meals.find((m) => m.slot === slot)
+  const taken = base.meals.filter((m) => m.slot !== slot).map((m) => m.id)
+  return (pool || options(slot, cur.id, a.day)).filter((id) => id !== cur.id && !taken.includes(id))
+    .map((id) => buildDay({ ...a, swaps: { ...a.swaps, [slot]: id } }).meals.find((m) => m.slot === slot))
+    .map((m) => ({ ...m, off: Math.abs(m.mac[0] - cur.mac[0]) + 4 * Math.abs(m.mac[1] - cur.mac[1]) }))
+    .sort((x, y) => x.off - y.off).slice(0, n)
 }
 
 export function shopping(plans) {

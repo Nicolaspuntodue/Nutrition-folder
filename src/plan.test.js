@@ -1,6 +1,6 @@
 // npm test: controlla il piano su ogni giorno e ogni combinazione di risposte.
 import assert from 'node:assert/strict'
-import { buildDay, shopping, WEEK, MEALS, options, nextOption, CRAVINGS } from './plan.js'
+import { buildDay, shopping, WEEK, MEALS, FOODS, options, nextOption, CRAVINGS, similar } from './plan.js'
 
 for (let day = 0; day < 7; day++) {
   for (const work of [true, false]) for (const training of ['no', 'mattina', 'pomeriggio', 'sera'])
@@ -53,3 +53,17 @@ for (let day = 0; day < 7; day++) for (const craving of Object.keys(CRAVINGS)) {
 const week = WEEK.map((_, day) => buildDay({ day, training: [0, 2, 4].includes(day) ? 'pomeriggio' : 'no' }))
 assert.ok(shopping(week).length >= 5)
 console.log('ok\n' + week.map((p) => `${p.day} ${Math.round(p.total[0])}/${p.goal.kcal} kcal, P${Math.round(p.total[1])}`).join('\n'))
+// "Stesse calorie": alternative vicine al pasto attuale, mai il piatto stesso, e funziona anche su un piatto dell'assistente.
+for (let day = 0; day < 7; day++) for (const slot of ['Colazione', 'Pranzo', 'Cena']) {
+  const a = { day, training: 'pomeriggio', breakfast: 'dolce' }
+  const cur = buildDay(a).meals.find((m) => m.slot === slot)
+  const sim = similar(a, slot)
+  assert.equal(sim.length, 3)
+  assert.ok(sim.every((m) => m.id !== cur.id && Math.abs(m.mac[0] - cur.mac[0]) < 250), `${slot} ${day}: ${sim.map((m) => Math.round(m.mac[0])).join(',')} vs ${Math.round(cur.mac[0])}`)
+}
+const custom = { ai1: { name: 'Yogurt bianco con fragole', photo: 'yogurtMela', ing: [['Yogurt bianco', 200], ['Fragole', 150], ['Granola', 40]] } }
+const withAi = buildDay({ day: 2, custom, swaps: { Colazione: 'ai1' } })
+assert.equal(withAi.meals.find((m) => m.slot === 'Colazione').img, '/img/meals/yogurtMela.jpg')
+assert.ok(similar({ day: 2, custom, swaps: { Colazione: 'ai1' } }, 'Colazione').length === 3)
+for (const id of Object.keys(MEALS)) for (const [f] of MEALS[id].ing) assert.ok(FOODS[f], `${id}: alimento sconosciuto ${f}`)
+console.log('similar ok,', Object.keys(MEALS).length, 'piatti')
